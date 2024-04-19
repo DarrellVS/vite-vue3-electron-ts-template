@@ -1,7 +1,9 @@
 <script setup lang="ts">
-defineProps<{
-    variant: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-}>()
+withDefaults(defineProps<{
+    variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+}>(), {
+    variant: 'h1',
+})
 
 const classMap = {
     h1: 'text-4xl font-bold text-slate-800 dark:text-slate-100',

@@ -16,8 +16,11 @@ const isActive = computed(() => isRouteActive(props.sidebarItem.route));
 <template>
     <RouterLink 
         class="flex gap-x-3 rounded-lg text-gray-700 dark:text-white p-2 mx-6 items-center group transition-colors duration-200 ease-in-out"
-        :class="isActive ? 'bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10' : 'after:bg-transparent hover:bg-gray-100 dark:hover:bg-white/5'"
-        :to="sidebarItem.route"
+        :class="isActive && !sidebarItem.noHighlight ? 'bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10' : 'after:bg-transparent hover:bg-gray-100 dark:hover:bg-white/5'"
+        :to="{
+            query: sidebarItem.routeParams,
+            path: sidebarItem.route,
+        }"
     >
         <component :is="sidebarItem.icon" size="18" />
         <span class="text-sm" :class="isActive && 'font-medium'">

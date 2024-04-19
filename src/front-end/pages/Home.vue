@@ -8,7 +8,7 @@ const { emit } = useElectron();
 const state = ref<ImagesStateStoreState>();
 
 onMounted(async () => {
-    const requestedState = await emit('getState');
+    const requestedState = await emit('images_getState');
     state.value = requestedState;
 });
 

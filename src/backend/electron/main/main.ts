@@ -39,6 +39,12 @@ app.whenReady().then(() => {
     handleRequest('app:images:selectSourceDirectory')
   );
 
+  ipcMain.handle('app:tags:getState', () => handleRequest('app:tags:getState'));
+
+  ipcMain.handle('app:tags:createTag', (event, tag) =>
+    handleRequest('app:tags:createTag', tag)
+  );
+
   createWindow();
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

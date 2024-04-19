@@ -1,9 +1,13 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
-    variant: 'primary' | 'secondary' | 'tertiary';
+    variant?: 'primary' | 'secondary' | 'tertiary';
 }>(), {
     variant: 'primary',
 });
+
+const emit = defineEmits<{
+    (eventName: 'click'): void
+}>();
 
 const classMap = {
     primary: 'bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700',
@@ -13,7 +17,7 @@ const classMap = {
 </script>
 
 <template>
-    <button class="rounded-lg px-6 py-3 text-sm" :class="classMap[variant]">
+    <button class="rounded-lg px-6 py-3 text-sm" :class="classMap[variant]" @click="emit('click')">
         <slot />
     </button>
 </template>

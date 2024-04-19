@@ -47,7 +47,9 @@ export const sidebarItems: SidebarItem[] = [
       {
         title: 'New tag',
         icon: PhPlus,
-        route: '/tags/new',
+        route: '/tags',
+        noHighlight: true,
+        routeParams: { new: true },
       },
     ],
   },

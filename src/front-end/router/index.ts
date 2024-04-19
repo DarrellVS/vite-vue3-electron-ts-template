@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router';
 import Home from '../pages/Home.vue';
 import { loadLayoutMiddleware } from '../helpers/layoutMiddleware';
 import Appearance from '../pages/settings/Appearance.vue';
+import Overview from '@/pages/tags/Overview.vue';
 
 const routes = [
   {
@@ -39,7 +40,7 @@ const routes = [
   {
     path: '/tags',
     name: 'Tags',
-    component: Home,
+    component: Overview,
     meta: {
       layout: 'SidebarLayout',
     },

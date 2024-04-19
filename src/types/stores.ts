@@ -22,7 +22,7 @@ export type ImagesStateStoreState = {
 export type Tag = {
   id: number;
   name: string;
-  color: string;
+  colorOption: number;
   parentTag?: number;
 };
 
