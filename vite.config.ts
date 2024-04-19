@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,7 +8,12 @@ export default defineConfig({
   base: './',
   server: {
     hmr: {
-      overlay: false
-    }
-  }
-})
+      overlay: false,
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src/front-end'),
+    },
+  },
+});
