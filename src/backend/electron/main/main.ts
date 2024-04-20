@@ -4,6 +4,18 @@ import { handleRequest } from '../../handlers';
 
 const isDev = process.env.npm_lifecycle_event === 'app:dev' ? true : false;
 
+const ipcEvents = [
+  'window:close',
+  'window:minimize',
+  'window:maximize',
+  'app:images:getState',
+  'app:images:selectSourceDirectory',
+  'app:tags:getState',
+  'app:tags:createTag',
+  'app:tags:deleteTag',
+  'app:tags:setTags',
+];
+
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -25,25 +37,9 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle('window:close', () => handleRequest('window:close'));
-
-  ipcMain.handle('window:minimize', () => handleRequest('window:minimize'));
-
-  ipcMain.handle('window:maximize', () => handleRequest('window:maximize'));
-
-  ipcMain.handle('app:images:getState', () =>
-    handleRequest('app:images:getState')
-  );
-
-  ipcMain.handle('app:images:selectSourceDirectory', async () =>
-    handleRequest('app:images:selectSourceDirectory')
-  );
-
-  ipcMain.handle('app:tags:getState', () => handleRequest('app:tags:getState'));
-
-  ipcMain.handle('app:tags:createTag', (event, tag) =>
-    handleRequest('app:tags:createTag', tag)
-  );
+  for (const event of ipcEvents) {
+    ipcMain.handle(event, (evt, dto) => handleRequest(event, dto));
+  }
 
   createWindow();
   app.on('activate', function () {

@@ -15,34 +15,28 @@ import BaseInput from '../base/input/BaseInput.vue';
 import BaseInputText from '../base/input/BaseInputText.vue';
 import { useElectron } from '@/composables/UseElectron';
 import { type Tag } from '../../../types/stores';
+import { mapTagsToComboboxOptions } from '@/helpers/tagsHelpers';
 
-const { emit: electronEmit } = useElectron()
+const { emit: electronEmit } = useElectron();
 
 const properties = defineProps<{
   existingTags?: Tag[];
-}>()
+}>();
 
 const emit = defineEmits<{
   (eventName: 'close'): void
-}>()
+}>();
 
-const parentOptions = computed(() => (properties.existingTags ?? []).map((tag) => {
-  const color = tagColors.find((color) => color.id === tag.colorOption)
-  
-  return {
-    value: tag.id,
-    label: tag.name,
-    badgeColor: color?.bg ?? '',
-    textColor: color?.text ?? '',
-  }
-}) || [])
+const tags = computed(() => properties.existingTags ?? []);
+
+const parentOptions = mapTagsToComboboxOptions(tags);
 
 const bgOptions = tagColors.map((color) => ({
   value: color.id,
   label: color.name,
   badgeColor: color.bg,
   textColor: color.text,
-}))
+}));
 
 const form = ref<{
   parentTag: string;
@@ -52,7 +46,7 @@ const form = ref<{
   parentTag: '',
   colorOption: 1,
   name: '',
-})
+});
 
 const submit = async () => {
   await electronEmit('tags_createTag', {

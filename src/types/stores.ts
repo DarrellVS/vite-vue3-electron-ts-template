@@ -12,6 +12,7 @@ export type BaseStoreState = {
 export type ImagesStateStoreStateEntry = {
   name: string;
   path: string;
+  tags: number[];
 };
 
 export type ImagesStateStoreState = {
@@ -19,13 +20,34 @@ export type ImagesStateStoreState = {
   entries: ImagesStateStoreStateEntry[];
 };
 
-export type Tag = {
+export type CreateTagDto = {
   id: number;
   name: string;
   colorOption: number;
   parentTag?: number;
 };
 
+export type Tag = {
+  id: number;
+  name: string;
+  colorOption: number;
+  childTags: Tag[];
+};
+
+export type IndentedTag = {
+  id: number;
+  name: string;
+  colorOption: number;
+  childTags: Tag[];
+  indentLevel: number;
+};
+
 export type TagStoreState = {
   tags: Tag[];
+};
+
+export type ImageTagStoreState = {
+  imageTags: {
+    [key: string]: number[];
+  };
 };

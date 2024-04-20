@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Check, ChevronsUpDown } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/shadcn/ui/button'
@@ -32,6 +32,8 @@ const emit = defineEmits<{
 }>()
 
 const multiple = computed(() => Array.isArray(properties.modelValue))
+
+const query = ref('');
 
 const isSelected = (value: AcceptedTypes) => {
     if (multiple.value && Array.isArray(properties.modelValue)) {
@@ -68,6 +70,12 @@ const optionBadges = computed(() => {
         }));
 })
 
+const filteredOptions = computed(() => {
+    return properties.options.filter((option) => {
+        return option.label.toLowerCase().includes(query.value.toLowerCase())
+    })
+})
+
 const open = ref(false)
 </script>
 
@@ -77,7 +85,7 @@ const open = ref(false)
       <Button
         role="combobox"
         :aria-expanded="open"
-        class="w-[300px] justify-between border border-gray-400 h-auto min-h-[3rem]"
+        class="w-[300px] justify-between border border-gray-400 h-auto min-h-[2.75rem]"
       >
         <template v-if="Array.isArray(modelValue) && multiple">
             <div v-if="optionBadges.length > 0" class="flex flex-wrap gap-1">
@@ -119,13 +127,13 @@ const open = ref(false)
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-[200px] p-0 rounded-lg dark:bg-slate-900 bg-white">
-      <Command>
+      <Command v-model:search-term="query">
         <CommandInput class="h-9" placeholder="Search option..." />
         <CommandEmpty>No option found.</CommandEmpty>
         <CommandList>
           <CommandGroup class="p-0">
             <CommandItem
-              v-for="option in options"
+              v-for="option in filteredOptions"
               :key="option.value"
               :value="option.value"
               @select="(ev) => {

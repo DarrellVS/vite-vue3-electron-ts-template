@@ -27,6 +27,7 @@ export default async () => {
         parsedFiles.push({
           name: file.name,
           path: join(path, file.name),
+          tags: [],
         });
       }
     }

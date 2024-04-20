@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import DynamicLayoutRenderer from './DynamicLayoutRenderer.vue';
 import { useElectron } from '../../composables/UseElectron'
+import { TagStoreState } from 'src/types/stores';
+import { computed, onMounted, provide, ref } from 'vue';
+import { TagsProviderKey } from '@/provider-keys/tagsProviderKey';
 
 const { emit } = useElectron();
+const state = ref<TagStoreState>();
+
+onMounted(async () => {
+    const requestedState = await emit('tags_getState');
+    state.value = requestedState;
+});
+
+provide(TagsProviderKey, computed(() => state.value?.tags ?? []));
 </script>
 
 <template>
     <div class="flex flex-col min-h-screen bg-white dark:bg-slate-900">
-        <nav class="h-12 fixed left-0 top-0 right-0" :class="$style['draggable-nav']">
+        <nav class="h-12 fixed left-0 top-0 right-0 z-50" :class="$style['draggable-nav']">
             <div class="justify-end flex">
                 <div class="p-4 backdrop-blur rounded-bl-lg flex gap-x-4 h-12 bg-white/50 dark:bg-slate-900 backdrop-blur rounded-bl-lg">
                     <button class="aspect-square rounded-full bg-red-500" :class="$style['control']" @click="emit('closeWindow')" />
